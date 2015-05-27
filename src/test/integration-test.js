@@ -14,15 +14,18 @@
                         less: require('../index')
                     }
                 }).build(function (pipe, callback) {
-                    pipe.from(path.resolve(path.dirname(module.filename), 'integration-test-files'))
+                    pipe.from(path.resolve(path.dirname(module.filename), 'integration-test-files/'))
                         .less()
                         .run(callback);
                 }, callback);
             },
 
             'should returns a compiled version': function (topic) {
-                assert.equal(Object.getOwnPropertyNames(topic).length, 1);
+                console.log(topic['index.html'].toString());
+
+                assert.equal(Object.getOwnPropertyNames(topic).length, 2);
                 assert.equal(topic['default.css'].toString(), 'html body {\n  font-family: Arial;\n}\n');
+                assert.equal(topic['index.html'].toString(), '<!DOCTYPE html>\n<html lang="en-US">\n<head>\n    <style type="text/less">\nhtml body { font-family: Arial; }\n    </style></head></html>');
             }
         }
     }).export(module);

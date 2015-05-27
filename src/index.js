@@ -1,7 +1,8 @@
-!function (less, linq, util) {
+!function (less, linq, path, util) {
     'use strict';
 
     var number = util.number,
+        replaceMultiple = util.regexp.replaceMultiple,
         time = util.time;
 
     module.exports = function (inputs, outputs, callback) {
@@ -13,7 +14,7 @@
             var startTime = Date.now(),
                 original = inputs[filename];
 
-            renderLess(original, function (err, css) {
+            processFile(filename, original.toString(), function (err, css) {
                 if (err) { return callback(err); }
 
                 var compiled = new Buffer(css);
@@ -37,13 +38,27 @@
         }).run(callback);
     };
 
-    function renderLess(content, callback) {
-        less.render(content.toString(), function (err, css) {
+    function processFile(filename, buffer, callback) {
+        if ((path.extname(filename) || '').toLowerCase() === '.html') {
+            processHTML(buffer.toString(), callback);
+        } else  {
+            renderLess(buffer.toString(), callback);
+        }
+    }
+
+    function processHTML(text, callback) {
+        // callback(new Error('not implemented'));
+        callback(null, text);
+    }
+
+    function renderLess(code, callback) {
+        less.render(code, function (err, css) {
             callback(err, err ? null : css.css);
         });
     }
 }(
     require('less'),
     require('async-linq'),
+    require('path'),
     require('publishjs').util
 );
