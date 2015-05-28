@@ -2,7 +2,7 @@
     'use strict';
 
     var number = util.number,
-        replaceMultiple = util.regexp.replaceMultiple,
+        replaceMultipleAsync = util.regexp.replaceMultipleAsync,
         time = util.time;
 
     module.exports = function (inputs, outputs, callback) {
@@ -48,7 +48,20 @@
 
     function processHTML(text, callback) {
         // callback(new Error('not implemented'));
-        callback(null, text);
+        replaceMultipleAsync(
+            text,
+            [
+                [
+                    /((?:<style [^>]*?type=")(?:text\/less)(?:"[^>]*>))([\s\S]*?)(<\/style>)/gmi,
+                    function (match0, match1, match2, match3, index, input, callback) {
+                        less.render(match2, function (err, css) {
+                            callback(err, err ? null : (match1 + css.css + match3));
+                        });
+                    }
+                ]
+            ],
+            callback
+        );
     }
 
     function renderLess(code, callback) {
