@@ -52,10 +52,10 @@
             text,
             [
                 [
-                    /((?:<style [^>]*?type=")(?:text\/less)(?:"[^>]*>))([\s\S]*?)(<\/style>)/gmi,
-                    function (match0, match1, match2, match3, index, input, callback) {
-                        less.render(match2, function (err, css) {
-                            callback(err, err ? null : (match1 + css.css + match3));
+                    /(<style [^>]*?type=")(?:text\/less)("[^>]*>)([\s\S]*?)(<\/style>)/gmi,
+                    function (match0, match1, match2, match3, match4, index, input, callback) {
+                        less.render(match3, function (err, css) {
+                            callback(err, err ? null : (match1 + 'text/css' + match2 + css.css + match4));
                         });
                     }
                 ]

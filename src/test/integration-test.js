@@ -23,7 +23,7 @@
             'should returns a compiled version': function (topic) {
                 assert.equal(Object.getOwnPropertyNames(topic).length, 2);
                 assert.equal(topic['default.css'].toString(), 'html body {\n  font-family: Arial;\n}\n');
-                assert.equal(topic['index.html'].toString().replace(/\r/g, ''), '<!DOCTYPE html>\n<html lang="en-US">\n<head>\n    <style type="text/less">html body {\n  font-family: Arial;\n}\n</style>\n</head>\n</html>');
+                assert.equal(topic['index.html'].toString().replace(/\r/g, ''), '<!DOCTYPE html>\n<html lang="en-US">\n<head>\n    <style type="text/css">html body {\n  font-family: Arial;\n}\n</style>\n</head>\n</html>');
             }
         }
     }).export(module);
