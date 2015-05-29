@@ -2,7 +2,7 @@
     'use strict';
 
     require('vows').describe('Integration test').addBatch({
-        'When minifying a CSS file': {
+        'When compiling a LESS file': {
             topic: function () {
                 var callback = this.callback,
                     topic;
