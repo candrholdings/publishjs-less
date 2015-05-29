@@ -33,9 +33,12 @@
                     '%)'
                 ].join(''));
 
-                callback(null, compiled);
+                outputs[filename] = compiled;
+                callback();
             });
-        }).run(callback);
+        }).run(function (err) {
+            callback(err, err ? null : outputs);
+        });
     };
 
     function processFile(filename, buffer, callback) {
