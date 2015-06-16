@@ -8,6 +8,10 @@
     module.exports = function (inputs, outputs, callback) {
         var that = this;
 
+        inputs.deleted.forEach(function (filename) {
+            outputs[filename] = null;
+        });
+
         inputs = inputs.newOrChanged;
 
         linq(inputs).async.select(function (buffer, filename, callback) {
