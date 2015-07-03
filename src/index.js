@@ -21,23 +21,28 @@
             processFile(filename, original.toString(), function (err, css) {
                 if (err) { return callback(err); }
 
-                var compiled = new Buffer(css);
+                if (css) {
+                    var compiled = new Buffer(css);
 
-                that.log([
-                    'Compiled ',
-                    filename,
-                    ', took ',
-                    time.humanize(Date.now() - startTime),
-                    ' (',
-                    number.bytes(original.length),
-                    ' -> ',
-                    number.bytes(compiled.length),
-                    ', ',
-                    (((compiled.length / original.length) - 1) * 100).toFixed(1),
-                    '%)'
-                ].join(''));
+                    that.log([
+                        'Compiled ',
+                        filename,
+                        ', took ',
+                        time.humanize(Date.now() - startTime),
+                        ' (',
+                        number.bytes(original.length),
+                        ' -> ',
+                        number.bytes(compiled.length),
+                        ', ',
+                        (((compiled.length / original.length) - 1) * 100).toFixed(1),
+                        '%)'
+                    ].join(''));
 
-                outputs[filename] = compiled;
+                    outputs[filename] = compiled;
+                } else {
+                    outputs[filename] = original;
+                }
+
                 callback();
             });
         }).run(function (err) {
@@ -46,10 +51,14 @@
     };
 
     function processFile(filename, buffer, callback) {
-        if ((path.extname(filename) || '').toLowerCase() === '.html') {
+        var extname = (path.extname(filename) || '').toLowerCase();
+
+        if (extname === '.html' || extname === '.htm') {
             processHTML(buffer.toString(), callback);
-        } else  {
+        } else if (extname === '.css' || extname === '.less') {
             renderLess(buffer.toString(), callback);
+        } else {
+            callback();
         }
     }
 
