@@ -19,7 +19,11 @@
                 original = inputs[filename];
 
             processFile(filename, original.toString(), function (err, css) {
-                if (err) { return callback(err); }
+                if (err) {
+                    that.log('Failed to process ' + filename + ' due to ' + err.message);
+
+                    return callback(err);
+                }
 
                 if (css) {
                     var compiled = new Buffer(css);
