@@ -1,6 +1,6 @@
 {
   "name": "publishjs-less",
-  "version": "0.0.2-dev",
+  "version": "0.0.3",
   "description": "Integrate Less.js with PublishJS",
   "keywords": [
     "less",
@@ -23,7 +23,7 @@
   "dependencies": {
     "async-linq": "^1.0.2",
     "less": "^2.5.1",
-    "publishjs": "*"
+    "publishjs": "^0.0.3"
   },
   "devDependencies": {
     "async": "^1.0.0",
